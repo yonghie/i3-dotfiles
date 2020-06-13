@@ -1,0 +1,195 @@
+#         ___ _____    ____             __ _       
+#        |_ _|___ /   / ___|___  _ __  / _(_) __ _ 
+#         | |  |_ \  | |   / _ \| '_ \| |_| |/ _` |
+#         | | ___) | | |__| (_) | | | |  _| | (_| |
+#        |___|____/   \____\___/|_| |_|_| |_|\__, |
+#                                            |___/ (i3-gaps)
+
+#         __  __      _      
+#        |  \/  |__ _(_)_ _  
+#        | |\/| / _` | | ' \ 
+#        |_|  |_\__,_|_|_||_|
+
+# Default mod key (Mod4 — Super/Meta, Mod1 — Alt)
+set $mod Mod4
+
+# Font fr window titles.
+font pango:SF Pro Text Medium 12
+
+# Mouse+$mod — drag floating windows 
+floating_modifier $mod
+
+# Start a Terminal
+bindsym $mod+Return exec terminator
+
+# Kill focused window
+bindsym $mod+Shift+q kill
+
+# Start rofi (programm launcher)
+bindsym $mod+d exec rofi -show run
+
+#         __  __               _____                
+#        |  \/  |_____ _____  / / __|__  __ _  _ ___
+#        | |\/| / _ \ V / -_)/ /| _/ _ \/ _| || (_-<
+#        |_|  |_\___/\_/\___/_/ |_|\___/\__|\_,_/__/
+# 
+
+# Change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# Move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# Change focus between tiling / floating windows
+bindsym $mod+Shift+space focus mode_toggle
+
+#
+#
+#       Layout
+#
+#
+
+# Split in horizontal orientation
+bindsym $mod+Mod1+h split h
+
+# Split in vertical orientation
+bindsym $mod+Mod1+v split v
+
+# Toggle fullscreen mode for focused container
+bindsym $mod+Shift+f fullscreen toggle
+
+# Change container layout (stack, tab, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# Toggle tiling / floating
+bindsym $mod+space floating toggle
+
+# Focus the parent container
+bindsym $mod+a focus parent
+
+#
+#
+#       WORKSPACES
+#
+#
+
+# Define names for default workspaces for witch we configure keybindings later on.
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+#Switch to workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+# Move focused container to workspace 
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+10 move container to workspace 10
+
+
+#
+#
+#       RESTART
+#
+#
+
+# Restart i3 inplace 
+bindsym $mod+Shift+r restart
+
+# Exit i3
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Do you really want to exit i3? This will end you X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+#
+#
+#       RESIZE
+#
+#
+
+# Resize window
+mode "resize"
+{
+        # Triggers when you enter resize mode
+        
+        # Shrink 
+        bindsym h resize shrink width 8 px or 2 ppt
+        bindsym k resize shrink height 8 px or 2 ppt
+        # Grow
+        bindsym j resize grow width 8 px or 2 ppt
+        bindsym l resize grow height 8 px or 2 ppt
+
+        # Exit resize mode 
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode "resize"
+
+#
+#
+#       CUSTOM ADDONS
+#
+#
+
+# Autostart
+#
+
+exec --no-startup-id nm-applet
+exec --no-startup-id sh $HOME/.config/polybar/launch.sh
+exec --no-startup-id sh $HOME/.config/autostart-scripts/wallpaper.sh
+exec --no-startup-id sh $HOME/.config/autostart-scripts/mouseNkey.sh
+
+
+# Binds 
+bindsym Print exec flameshot gui # Take custom screenshot
+bindsym $mod+Shift+Insert exec polybar -c $HOME/.config/polybar/config.ini -r top # Starts polybar if not already
+
+# Border & title 
+for_window [class="^.*"] border pixel 0, title_format " %title "
+gaps inner 4
+gaps outer 4
+
+# Backlight 
+bindsym XF86MonBrightnessUp exec brightnessctl s +10%
+bindsym XF86MonBrightnessDown exec brightnessctl s 10%-
+
+# Audio
+bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +2%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -2%
+bindsym XF86AudioMicMute exec pactl set-source-mute 1 toggle
+
+#Colors
+#class                          border          background      text            indicator       child_border
+client.focused                  #4f565c         #000000         #ffff33         $coloratt       #4f565c
+client.focused_inactive         #4f565c         #000000         #ffff33         $coloratt       #4f565c
+client.unfocused                #4f565c         #000000         #888888         $coloratt       #4f565c
