@@ -1,0 +1,1 @@
+# My i3 dotfiles for i3 and polybar width some scripts
